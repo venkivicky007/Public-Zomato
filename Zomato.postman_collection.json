@@ -1,0 +1,454 @@
+{
+	"info": {
+		"_postman_id": "fa33c55f-cefa-48be-bcf6-45e7d5420c37",
+		"name": "Zomato",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "13-11-2020",
+			"item": [
+				{
+					"name": "Categories ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1bc6d7a4-d6d4-4f27-bfe1-df755be78150",
+								"exec": [
+									"// Fetching the response from body in json format and storing it in a ref variable\r",
+									"const categories = pm.response.json();\r",
+									"// counting the categories using length method & storing it in a ref variable\r",
+									"var categories_count=categories.categories.length;\r",
+									"//Printing the categories\r",
+									"console.log(\"no.of categories :\" +categories_count);\r",
+									"// here i am again counting the categories and checking id & name keys are present for each category\r",
+									"//var count=0;\r",
+									"for(var i=0;i<categories.categories.length;i++){\r",
+									"//count = i+1; //using addition operator adding 1 to the i value because i starts from '0' \r",
+									"   if(categories.categories[i].categories !== \"undefined\" ){\r",
+									"       // !== undefined means propeties should present\r",
+									"\r",
+									"        pm.test(\"Check id & name available for each category \", function () {\r",
+									"            pm.response.to.have.status(200);\r",
+									"            pm.expect(categories.categories[i].categories).to.have.property('id');\r",
+									"            pm.expect(categories.categories[i].categories).to.have.property('name');\r",
+									"            //here i can write these above 2 lines as different test cases but i had manually checked the 2 properties are present . and if one property is notpresent also means my assertion will fail although it cointains one property \r",
+									"        });   \r",
+									"    }\r",
+									"  }\r",
+									" // console.log(\"no.of  categories  = \" +count);\r",
+									"\r",
+									"\r",
+									" //if(pm.expect(categories[i].categories).to.have.keys(\"id\",\"name\")){\r",
+									"   //   console.log(categories[i].categories.id);\r",
+									"     // count++;"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "13718dc5-ac50-4fd9-a323-53d00f5735d0",
+								"exec": [
+									"console.log(\"Starting the Categories module test\");\r",
+									"console.log(\"categories request\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "user-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/categories",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e6897a9d-9df4-4ef3-88e8-f449e49f08a9",
+								"exec": [
+									"// Fetching the response from body in json format and storing it in a ref variable\r",
+									"var response = pm.response.json();\r",
+									"//seting the id of city in an environmental variable \r",
+									"pm.environment.set(\"city_id\", response.location_suggestions[0].id);\r",
+									"//printing  the environment variable of city _id \r",
+									"//console.log(pm.environment.get(\"city_id\"));\r",
+									"var cityid= pm.environment.get(\"city_id\");\r",
+									"console.log(\"cityid = \" + cityid)\r",
+									"//checking the details of city \r",
+									"console.log(response.location_suggestions[0].name + \"  \" + response.location_suggestions[0].country_name)"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5a0ac53c-f2db-4287-b8e5-a3e25e2c8586",
+								"exec": [
+									"console.log(\"Starting the cities module test\");\r",
+									"console.log(\"cities request\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "user-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/cities?q=ahmedabad",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cities"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "ahmedabad"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "collection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e4e9dd97-1033-4c99-9d05-5fa417c833c7",
+								"exec": [
+									"// Fetching the response from body in json format and storing it in a ref variable\r",
+									"var collections = pm.response.json();\r",
+									"//printing the number of collections\r",
+									"console.log(collections);\r",
+									"//printing id and collection of each collection using a loop\r",
+									"for(i=0;i<collections.collections.length;i++)\r",
+									"{\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    \r",
+									"          console.log(collections.collections[i].collection.collection_id + \"  \" + collections.collections[i].collection.title);\r",
+									"          //console.log(collections.collections[i].collection.title);\r",
+									"    });\r",
+									"    }\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fead1f6e-6681-49c1-9f7e-5ae6b657a1cb",
+								"exec": [
+									"console.log(\"Starting the collection module test\");\r",
+									"console.log(\"collections request\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "user-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/collections?city_id={{city_id}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"collections"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "{{city_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cusines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17967d61-8f42-441f-8230-6a5773de3ef5",
+								"exec": [
+									"// Fetching the response from body in json format and storing it in a ref variable\r",
+									"var response = pm.response.json();\r",
+									"// counting the cuisines length\r",
+									"var cuisines_count = response.cuisines.length;\r",
+									"// printing the cuisines count\r",
+									"console.log(\"no.of cusinies :\" + cuisines_count);\r",
+									"\r",
+									"for(var i=0;i<response.cuisines.length;i++)\r",
+									"{\r",
+									"   var c = response.cuisines[i].cuisine.cuisine_id;\r",
+									"       // checking cuisine id value should be number\r",
+									"        pm.test(\"Checking cuisine id should be a number \", function () {\r",
+									"            pm.expect(c).to.be.a('number');\r",
+									"        });   \r",
+									"        if(c.toString().indexOf(0)>-1)\r",
+									"        {//indexof() method returns the index with in the calling string object of the first occurance of the specified value, starting the search at from index.returns -1 if the value is not found. \r",
+									"        \r",
+									"            console.log(c);\r",
+									"            //console.log(response);\r",
+									"           var cuisine_name = response.cuisines[i].cuisine.cuisine_name;\r",
+									"             console.log(cuisine_name);\r",
+									"        }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "01ee3c82-6f86-4008-b625-da153358990f",
+								"exec": [
+									"console.log(\"Starting the cuisines module test\");\r",
+									"console.log(\"cuisines request\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "user-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/cuisines?city_id={{city_id}}",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cuisines"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "{{city_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "location details",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6df543e5-15aa-4f94-9017-2ad2526cc9b9",
+								"exec": [
+									"console.log(\"Starting the location details module test\");\r",
+									"console.log(\"location details request\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "19c6d482-675a-4efc-a79c-2dc40c269b22",
+								"exec": [
+									"// Fetching the response from body in json format and storing it in a ref variable\r",
+									"const response = pm.response.json();\r",
+									"//printing the popularity \r",
+									"console.log(response.popularity);\r",
+									"//printing the near by restaurants\r",
+									"console.log(JSON.stringify(response.nearby_res));\r",
+									"//printing the top cuisines\r",
+									"console.log(JSON.stringify(response.top_cuisines));\r",
+									"//json.stringify converts thejavascript object to string(serialize the objects and converts to string)\r",
+									"//loop is for to select the 2nd restaurant from the array and print its restaurant id\r",
+									"for(var i=0;i<response.best_rated_restaurant.length;i++)\r",
+									"{\r",
+									"     pm.test(\"Check id & name available for each category \", function () {\r",
+									"            pm.response.to.have.status(200);\r",
+									"            pm.expect(response.best_rated_restaurant[1].restaurant.R.res_id );\r",
+									"//console.log(\"To select 2nd restaurant:\" + response.best_rated_restaurant[1]);\r",
+									"}\r",
+									"     )};\r",
+									"console.log(response.best_rated_restaurant[1].restaurant.R.res_id );\r",
+									"console.log(response.best_rated_restaurant[1].restaurant.all_reviews_count);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "{{API_KEY}}",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "user-key",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/location_details?entity_id={{city_id}}&entity_type=city",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"location_details"
+							],
+							"query": [
+								{
+									"key": "entity_id",
+									"value": "{{city_id}}"
+								},
+								{
+									"key": "entity_type",
+									"value": "city"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9f92e5de-6eac-4982-9276-553487979dd3",
+						"type": "text/javascript",
+						"exec": [
+							"console.log(\"Belongs to 13-nov-2020---task\");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8225065d-4c32-41cd-a0c6-b6ae7b618bab",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "9efa246d-f45b-4656-9743-ee9036d2dd05",
+				"type": "text/javascript",
+				"exec": [
+					"console.log(\"Zomato Collection\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "c5222cff-042b-45ab-9236-6104fad4ccb9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
